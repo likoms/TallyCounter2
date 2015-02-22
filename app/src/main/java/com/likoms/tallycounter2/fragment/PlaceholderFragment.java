@@ -21,93 +21,82 @@ public class PlaceholderFragment extends Fragment {
     private TextView counter2;
     private Button nextButton;
     private Button nextButton2;
-    private TextView result;
-    //private TextView result2;
-    private Button resetButton;
-    private Integer limit=100;
-//TODO button which get a number of game limit
+
 
     public PlaceholderFragment() {
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    // TODO add preference for setting that value
+    private Integer DEFAULT_LIMIT = 10;
+    private final static int DEFAULT_INCREMENT = 1;
+    private final static int DEFAULT_VALUE = 0;
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_tally_main, container, false);
         this.counter = (TextView) rootView.findViewById(R.id.counter);
         this.counter2 = (TextView) rootView.findViewById(R.id.counter2);
         this.nextButton = (Button) rootView.findViewById(R.id.next);
-        this.result = (TextView) rootView.findViewById(R.id.textViewWon);
-        //this.result2 = (TextView) rootView.findViewById(R.id.textViewWon2);
+        this.nextButton2 = (Button) rootView.findViewById(R.id.next2);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int index = Integer.parseInt(counter.getText().toString());
-
-                if(index>=limit){
-                    result.setText("Red Win !!");
-                    //result2.setText("Player one Win !!");
-                    index=0;
-
-                }else{
-                    counter.setText((index + 1) + "");
-                }
+                if (incrementElement(counter))
+                    onGameFinished(getActivity().getString(R.string.red_win));
             }
         });
-        this.nextButton2 = (Button) rootView.findViewById(R.id.next2);
+
         nextButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int index = Integer.parseInt(counter2.getText().toString());
-                if(index>=limit){
-                    result.setText("Blue Win !!");
-                   // result2.setText("Player one Win !!");
-                    index=0;
-                }else{
-                    counter2.setText((index + 1) + "");
-                }
-            }
-        });
+                if (incrementElement(counter2))
+                    onGameFinished(getActivity().getString(R.string.blue_win));
 
-        //Dialog
-        builder.setMessage(R.string.confirm_dialog)
-                .setPositiveButton(R.string.yes_option_dialog, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        counter.setText("0");
-                        counter2.setText("0");
-                        result.setText("");
-                       // result2.setText("");
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(R.string.cancel_option_dialog, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        //End of dialog
-        this.resetButton = (Button) rootView.findViewById(R.id.buttonReset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create the AlertDialog object and return it
-                AlertDialog alert = builder.create();
-                alert.show();
-                //counter.setText("0");
             }
         });
 
         return rootView;
     }
 
+    private void onGameFinished(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.ok_option_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int clickedId) {
+                reset();
+            }
+        });
+        builder.setTitle(getActivity().getString(R.string.game_over));
+        builder.create().show();
+    }
 
 
+    /**
+     * @param counter
+     * @return true if user should win
+     */
+    private boolean incrementElement(TextView counter) {
+        int index = Integer.parseInt(counter.getText().toString());
+        // TODO Both players can win if they will touch button at the same time :)
+        if (index == DEFAULT_LIMIT) {
+            return true;
+        }
+        counter.setText((index + DEFAULT_INCREMENT) + "");
+        return false;
+    }
+
+    public void reset() {
+        counter.setText(DEFAULT_VALUE + "");
+        counter2.setText(DEFAULT_VALUE + "");
+    }
 }
+
+
+
+
+

@@ -9,5 +9,9 @@
     <string name="cancel_option_dialog">Cancel</string>
     <string name="tap">Tap !</string>
     <string name="resetButton">reset</string>
+    <string name="red_win">Red Win</string>
+    <string name="blue_win">Blue Win</string>
+    <string name="game_over">Game Over</string>
+    <string name="ok_option_dialog">OK !</string>
 
 </resources>
