@@ -105,11 +105,14 @@ public class PlaceholderFragment extends Fragment {
         counter2.setText(DEFAULT_VALUE + "");
     }
     private boolean draw(Button nextButton, Button nextButton2){
-        if(nextButton.isPressed() && nextButton2.isPressed()){
+        int p = Integer.parseInt(counter.getText().toString());
+        int p2 = Integer.parseInt(counter2.getText().toString());
+        if(nextButton.isPressed() && nextButton2.isPressed() && p==DEFAULT_LIMIT && p2==DEFAULT_LIMIT){
             return true;
         }
         return false;
     }
+
 }
 
 
