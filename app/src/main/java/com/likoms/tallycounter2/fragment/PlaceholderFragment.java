@@ -52,7 +52,7 @@ public class PlaceholderFragment extends Fragment {
             public void onClick(View v) {
                 int index = Integer.parseInt(counter.getText().toString());
 
-                if(index==limit){
+                if(index>=limit){
                     result.setText("Red Win !!");
                     //result2.setText("Player one Win !!");
                     index=0;
@@ -67,7 +67,7 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int index = Integer.parseInt(counter2.getText().toString());
-                if(index==limit){
+                if(index>=limit){
                     result.setText("Blue Win !!");
                    // result2.setText("Player one Win !!");
                     index=0;
