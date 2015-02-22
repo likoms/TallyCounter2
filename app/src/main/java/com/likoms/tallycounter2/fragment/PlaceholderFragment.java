@@ -46,17 +46,28 @@ public class PlaceholderFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (incrementElement(counter))
-                    onGameFinished(getActivity().getString(R.string.red_win));
+
+                if (incrementElement(counter)){
+                    if(draw(nextButton,nextButton2)){
+                        onGameFinished(getActivity().getString(R.string.draw));
+                    }else{
+                        onGameFinished(getActivity().getString(R.string.red_win));
+                    }
+                }
             }
         });
 
         nextButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (incrementElement(counter2))
-                    onGameFinished(getActivity().getString(R.string.blue_win));
 
+                if (incrementElement(counter2)){
+                    if(draw(nextButton,nextButton2)){
+                        onGameFinished(getActivity().getString(R.string.draw));
+                    }else{
+                        onGameFinished(getActivity().getString(R.string.blue_win));
+                    }
+                }
             }
         });
 
@@ -82,7 +93,6 @@ public class PlaceholderFragment extends Fragment {
      */
     private boolean incrementElement(TextView counter) {
         int index = Integer.parseInt(counter.getText().toString());
-        // TODO Both players can win if they will touch button at the same time :)
         if (index == DEFAULT_LIMIT) {
             return true;
         }
@@ -93,6 +103,12 @@ public class PlaceholderFragment extends Fragment {
     public void reset() {
         counter.setText(DEFAULT_VALUE + "");
         counter2.setText(DEFAULT_VALUE + "");
+    }
+    private boolean draw(Button nextButton, Button nextButton2){
+        if(nextButton.isPressed() && nextButton2.isPressed()){
+            return true;
+        }
+        return false;
     }
 }
 

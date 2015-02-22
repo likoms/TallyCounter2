@@ -13,5 +13,6 @@
     <string name="blue_win">Blue Win</string>
     <string name="game_over">Game Over</string>
     <string name="ok_option_dialog">OK !</string>
+    <string name="draw">Draw !!</string>
 
 </resources>
