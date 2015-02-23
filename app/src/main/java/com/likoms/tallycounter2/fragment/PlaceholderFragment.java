@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.likoms.tallycounter2.R;
-
-import static android.text.TextUtils.isDigitsOnly;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -144,19 +143,17 @@ public class PlaceholderFragment extends Fragment {
     }
     private void showSettings(){
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        final EditText input = new EditText(getActivity());
-        alert.setView(input);
+        final EditText inputLimit = new EditText(getActivity());
+        inputLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        alert.setView(inputLimit);
         alert.setMessage("Edit limit");
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                if(isDigitsOnly(value)){
-                    DEFAULT_LIMIT= Integer.parseInt(value);
-                }else{
-                    alert.setMessage("You write wrong value");
+                String valueLimit = inputLimit.getText().toString().trim();
+                    DEFAULT_LIMIT= Integer.parseInt(valueLimit);
                 }
-            }
         });
 
         alert.setNegativeButton("Cancel",
