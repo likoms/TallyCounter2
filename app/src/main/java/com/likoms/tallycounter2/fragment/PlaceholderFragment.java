@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.likoms.tallycounter2.R;
@@ -34,7 +35,7 @@ public class PlaceholderFragment extends Fragment {
 
     // TODO change choosing value in preference
     // TODO fix Dialog Alert
-    // TODO remove draw
+    // TODO fix bug : When one is pressed second can't be pressed
 
     private Integer DEFAULT_LIMIT = 10;
     private final static int DEFAULT_INCREMENT = 1;
@@ -77,7 +78,7 @@ public class PlaceholderFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (incrementElement(counter)){
+                if (incrementElement(counter)) {
                     if (nextButton2.isPressed() && incrementElement(counter2)) {
                         onGameFinished(getActivity().getString(R.string.draw));
                     } else {
@@ -137,36 +138,57 @@ public class PlaceholderFragment extends Fragment {
         counter2.setText(DEFAULT_VALUE + "");
     }
 
-    private boolean draw(Button nextButton, Button nextButton2) {
-        int p = Integer.parseInt(counter.getText().toString());
-        int p2 = Integer.parseInt(counter2.getText().toString());
-        if (nextButton.isPressed() && nextButton2.isPressed() && p == DEFAULT_LIMIT && p2 == DEFAULT_LIMIT) {
-            return true;
-        }
-        return false;
-    }
 
     private void showSettings() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final NumberPicker numberPicker = new NumberPicker(getActivity());
         final EditText inputLimit = new EditText(getActivity());
         inputLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
+        // alert View
+        String[] values = new String[100];
+        for (int i = 1; i < values.length; i++) {
+            values[i] = Integer.toString(i * 5);
+        }
+        numberPicker.setMaxValue(values.length - 1);
+        numberPicker.setMinValue(0);
+        numberPicker.setWrapSelectorWheel(false);
+        numberPicker.setDisplayedValues(values);
 
-        alert.setView(inputLimit);
-        alert.setMessage("Edit limit");
+        //
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String valueLimit = inputLimit.getText().toString().trim();
-                DEFAULT_LIMIT = Integer.parseInt(valueLimit);
+
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+                    DEFAULT_LIMIT = newVal;
+
             }
         });
 
+        alert.setMessage("Edit limit");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+
+                {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // String valueLimit = inputLimit.getText().toString().trim();
+                        //DEFAULT_LIMIT = Integer.parseInt(valueLimit);
+                        // Integer valueLimit = numberPicker.getValue();
+                        // DEFAULT_LIMIT = valueLimit;
+
+                    }
+                }
+
+        );
+
         alert.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener()
+                {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.cancel();
                     }
-                });
+                }
+        );
+        alert.setView(numberPicker);
         alert.create().show();
     }
 
