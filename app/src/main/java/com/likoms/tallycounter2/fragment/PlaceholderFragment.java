@@ -5,12 +5,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.likoms.tallycounter2.R;
+
+import static android.text.TextUtils.isDigitsOnly;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,16 +34,37 @@ public class PlaceholderFragment extends Fragment {
 
 
     // TODO add preference for setting that value
+    // TODO fix Dialog Alert
     private Integer DEFAULT_LIMIT = 10;
     private final static int DEFAULT_INCREMENT = 1;
     private final static int DEFAULT_VALUE = 0;
 
 
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_placeholder_fragment, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.new_game:
+                reset();
+                return true;
+            case R.id.settings:
+                showSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_tally_main, container, false);
         this.counter = (TextView) rootView.findViewById(R.id.counter);
         this.counter2 = (TextView) rootView.findViewById(R.id.counter2);
@@ -71,7 +98,10 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
+
+
         return rootView;
+
     }
 
     private void onGameFinished(String message) {
@@ -111,6 +141,31 @@ public class PlaceholderFragment extends Fragment {
             return true;
         }
         return false;
+    }
+    private void showSettings(){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        final EditText input = new EditText(getActivity());
+        alert.setView(input);
+        alert.setMessage("Edit limit");
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString().trim();
+                if(isDigitsOnly(value)){
+                    DEFAULT_LIMIT= Integer.parseInt(value);
+                }else{
+                    alert.setMessage("You write wrong value");
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+        alert.create().show();
     }
 
 }

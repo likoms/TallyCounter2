@@ -14,5 +14,7 @@
     <string name="game_over">Game Over</string>
     <string name="ok_option_dialog">OK !</string>
     <string name="draw">Draw !!</string>
+    <string name="new_game">New Game</string>
+    <string name="settings">Settings</string>
 
 </resources>
