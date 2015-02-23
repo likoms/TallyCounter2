@@ -32,8 +32,9 @@ public class PlaceholderFragment extends Fragment {
     }
 
 
-    // TODO add preference for setting that value
+    // TODO change choosing value in preference
     // TODO fix Dialog Alert
+    // TODO remove draw
 
     private Integer DEFAULT_LIMIT = 10;
     private final static int DEFAULT_INCREMENT = 1;
@@ -46,6 +47,7 @@ public class PlaceholderFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_placeholder_fragment, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -75,14 +77,14 @@ public class PlaceholderFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (incrementElement(counter)){
-                    if(draw(nextButton,nextButton2)){
+                    if (nextButton2.isPressed() && incrementElement(counter2)) {
                         onGameFinished(getActivity().getString(R.string.draw));
-                    }else{
+                    } else {
                         onGameFinished(getActivity().getString(R.string.red_win));
                     }
                 }
+
             }
         });
 
@@ -90,10 +92,11 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (incrementElement(counter2)){
-                    if(draw(nextButton,nextButton2)){
+                if (incrementElement(counter2)) {
+
+                    if (nextButton.isPressed() && incrementElement(counter)) {
                         onGameFinished(getActivity().getString(R.string.draw));
-                    }else{
+                    } else {
                         onGameFinished(getActivity().getString(R.string.blue_win));
                     }
                 }
@@ -133,15 +136,17 @@ public class PlaceholderFragment extends Fragment {
         counter.setText(DEFAULT_VALUE + "");
         counter2.setText(DEFAULT_VALUE + "");
     }
-    private boolean draw(Button nextButton, Button nextButton2){
+
+    private boolean draw(Button nextButton, Button nextButton2) {
         int p = Integer.parseInt(counter.getText().toString());
         int p2 = Integer.parseInt(counter2.getText().toString());
-        if(nextButton.isPressed() && nextButton2.isPressed() && p==DEFAULT_LIMIT && p2==DEFAULT_LIMIT){
+        if (nextButton.isPressed() && nextButton2.isPressed() && p == DEFAULT_LIMIT && p2 == DEFAULT_LIMIT) {
             return true;
         }
         return false;
     }
-    private void showSettings(){
+
+    private void showSettings() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         final EditText inputLimit = new EditText(getActivity());
         inputLimit.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -152,8 +157,8 @@ public class PlaceholderFragment extends Fragment {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String valueLimit = inputLimit.getText().toString().trim();
-                    DEFAULT_LIMIT= Integer.parseInt(valueLimit);
-                }
+                DEFAULT_LIMIT = Integer.parseInt(valueLimit);
+            }
         });
 
         alert.setNegativeButton("Cancel",
