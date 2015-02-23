@@ -34,6 +34,7 @@ public class PlaceholderFragment extends Fragment {
 
     // TODO add preference for setting that value
     // TODO fix Dialog Alert
+
     private Integer DEFAULT_LIMIT = 10;
     private final static int DEFAULT_INCREMENT = 1;
     private final static int DEFAULT_VALUE = 0;
@@ -66,8 +67,10 @@ public class PlaceholderFragment extends Fragment {
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_tally_main, container, false);
         this.counter = (TextView) rootView.findViewById(R.id.counter);
+        counter.setRotation(180);
         this.counter2 = (TextView) rootView.findViewById(R.id.counter2);
         this.nextButton = (Button) rootView.findViewById(R.id.next);
+        nextButton.setRotation(180);
         this.nextButton2 = (Button) rootView.findViewById(R.id.next2);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,10 +100,7 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
-
-
         return rootView;
-
     }
 
     private void onGameFinished(String message) {
